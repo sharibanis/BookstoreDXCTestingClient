@@ -10,16 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import static org.hamcrest.Matchers.equalTo;
 
 import static io.restassured.RestAssured.given;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
-import bookstore.sharib.BookstoreApplication;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,
-	classes = BookstoreApplication.class
-)
 public class ServiceControllerTest {
 	private static final Logger log = LoggerFactory.getLogger(ServiceControllerTest.class);
 	private static final String baseUri = "http://localhost:8080/"; 
@@ -34,7 +30,7 @@ public class ServiceControllerTest {
 	@Test
 	public void whenRequestHealth_thenOK() {
     	log.info("whenRequestHealth_thenOK()");
-		given().log().uri().when().get("/actuator/health");
+		//given().log().uri().when().get("/actuator/health");
 		Response response = RestAssured.get("/actuator/health");
 		response.then().assertThat().statusCode(200).log().all();
 	}
@@ -42,22 +38,9 @@ public class ServiceControllerTest {
 	@Test
 	public void whenRequestGetFind_thenOK() {
     	log.info("whenRequestGetFind_thenOK()");
-		//RequestSpecification request = RestAssured.given();
-		/*request.header("Content-Type", "application/json");
-		request.auth().basic("user", "password")
-				.when().get("/bookstore/public/find?title=SomeTitle&author=SomeAuthor")
-				.then().assertThat().statusCode(200).log().all();*/
-		//given().log().uri().when().get("/bookstore/public/find");
-		//Response response = RestAssured.get("/bookstore/public/find?title=SomeTitle&author=SomeAuthor");
-		//response.then().assertThat().statusCode(200).log().all();
-		//response.then().assertThat().body("some.property", equalTo("expected value"));
-		given()
-		.auth().basic("user", "password")
-		.when()
-		.get("/bookstore/public/find?title=SomeTitle&author=SomeAuthor")
-		.then()
-		.statusCode(200)
-		.log().all();
+		Response response = RestAssured.get("/bookstore/public/find?title=1984&author=George%20Orwell");
+		response.then().assertThat().statusCode(200).log().all();
+		response.then().assertThat().body("title", equalTo("1984"));
 	}
 	
 	//@Test
