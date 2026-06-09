@@ -23,7 +23,7 @@ public class ServiceControllerTest {
 	private static final String baseUri = "http://localhost:8080/"; 
     
 	@BeforeAll
-	public static void setUp() throws Exception {
+	public static void setUp() {
 		log.info("Starting tests...");
 		RestAssured.baseURI = baseUri;
 	}
@@ -60,7 +60,7 @@ public class ServiceControllerTest {
     	log.info("whenRequestPostAddBook_thenOK()");
 		try {
 			JSONObject requestBody = new JSONObject(); 
-			requestBody.put("isbn", "1234567891123");
+			requestBody.put("isbn", "1234567890123");
 			requestBody.put("title", "Test Book");
 			JSONArray authorArray = new JSONArray();
 			authorArray.put("Test Author");
@@ -92,7 +92,7 @@ public class ServiceControllerTest {
     	log.info("whenRequestPutUpdateBook_thenOK()");
 		try {
 			JSONObject requestBody = new JSONObject(); 
-			requestBody.put("isbn", "1234567891123");
+			requestBody.put("isbn", "1234567890123");
 			requestBody.put("title", "Test Book");
 			JSONArray authorArray = new JSONArray();
 			authorArray.put("Test Author");
@@ -106,7 +106,7 @@ public class ServiceControllerTest {
 			request.body(requestBody.toString()); 
 			request.auth().basic("user", "password");
 			request.when()
-			.put("/bookstore/1234567891123")
+			.put("/bookstore/1234567890123")
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
@@ -127,7 +127,7 @@ public class ServiceControllerTest {
 			request.header("Content-Type", "application/json");
 			request.auth().basic("user", "password");
 			request.when()
-			.delete("/bookstore/1234567891123")
+			.delete("/bookstore/1234567890123")
 			.then()
 			.assertThat()
 			.statusCode(HttpStatus.OK.value());
